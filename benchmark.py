@@ -44,9 +44,27 @@ mongo_collection = mongo_db[table_name]
 mongo_collection.ensure_index([('last_update', pymongo.DESCENDING)], background=True)
 
 r.connect("localhost", 28015, db=database_name).repl()
-# r.db_create(database).run()
-# r.db(database_name).table_create("metrics").run()
-# r.table(table_name).index_create('last_update').run()
+
+def rethink_create_db_structure():
+	try:
+		r.db_create(database_name).run()
+	except:
+		pass
+
+	try:
+		r.db(database_name).table_drop(table_name).run()
+	except:
+		pass
+
+	try:
+		r.db(database_name).table_create(table_name).run()
+	except:
+		pass
+
+	try:
+		r.table(table_name).index_create('last_update').run()
+	except:
+		pass
 
 metrics_document = {
 	"table_name" : "django_session",
@@ -89,11 +107,32 @@ def update_benchmark_rethinkdb():
 	data = {'size': random_int(), 'reads': random_int(), 'cache_hit_rate': random_int()}
 
 	for i in range(0, 10):
-		print random_timestamp()
 		r.table(table_name).filter({"last_update":random_timestamp()}).update(data,
 		durability='soft').run()
 
 # Benchmark
+# print '------------------'
+# print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Insert', end=END_COLORED_LINE)
+# print '------------------'
+#
+# rethink_create_db_structure()
+#
+# for i in range(0, 3):
+# 	insert_benchmark_mongodb()
+# 	insert_benchmark_rethinkdb()
+#
+#
+# print '------------------'
+# print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Find', end=END_COLORED_LINE)
+# print '------------------'
+# for i in range(0, 3):
+# 	find_benchmark_mongodb()
+# 	find_benchmark_rethinkdb()
+
+
+print '------------------'
+print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Update', end=END_COLORED_LINE)
+print '------------------'
 for i in range(0, 3):
-	find_benchmark_mongodb()
-	find_benchmark_rethinkdb()
+	update_benchmark_mongodb()
+	update_benchmark_rethinkdb()
