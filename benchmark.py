@@ -30,7 +30,7 @@ def timing(f):
 		message = "op:{0}/time:{1:.2f}ms".format(total_operations,
 		total)
 
-		print "{function} took \n{color}{message}{end}".format(
+		print "{function} \n{color}{message}{end}".format(
 			function=f.func_name,
 			color=COLOR_GREEN,
 		 	message=message,
