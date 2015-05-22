@@ -1,17 +1,21 @@
+# RethinkDB updated config
+cores = 4
+cache=2048
+
 # Insert 100 000 documents
 
-rethink - 230 seconds avg - 128MB (durability hard)
-(95k documents in database)
+rethink - 230, 230, 183 seconds avg - 128MB (durability hard)
 
 rethink - 70 seconds avg, writes per second 1-1.2K - 124MB
-(94k documents in database) (durability soft)
-
+(durability soft)
 
 mongodb - 16 seconds avg - objects -22MB, indexes - 8MB, total storage - 37MB
 100 000 documents in database
 
-# Read/find 20 000 documents
+# Read/find 100 000 documents
+mongodb - avg - 0.56 seconds
+rethinkdb  - avg 1.45 seconds
 
-
-# Update 1 000 000 documents
-mongodb - avg 18 seconds
+# Update 100 000 documents
+mongodb - avg 22 seconds
+rethinkdb - crashes the database, test with 100 updates - 8 seconds

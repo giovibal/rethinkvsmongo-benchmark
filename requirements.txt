@@ -1,0 +1,2 @@
+pymongo==3.0.2
+rethinkdb==2.0.0.post1
