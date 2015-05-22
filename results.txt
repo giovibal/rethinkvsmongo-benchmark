@@ -1,0 +1,17 @@
+# Insert 100 000 documents
+
+rethink - 230 seconds avg - 128MB (durability hard)
+(95k documents in database)
+
+rethink - 70 seconds avg, writes per second 1-1.2K - 124MB
+(94k documents in database) (durability soft)
+
+
+mongodb - 16 seconds avg - objects -22MB, indexes - 8MB, total storage - 37MB
+100 000 documents in database
+
+# Read/find 20 000 documents
+
+
+# Update 1 000 000 documents
+mongodb - avg 18 seconds
