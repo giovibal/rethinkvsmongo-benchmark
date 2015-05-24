@@ -76,6 +76,14 @@ metrics_document = {
 	"size" : 1
 }
 
+data = {
+	'cpu'
+}
+for i in range(0, 100):
+	data = {'cpu': i,
+	"last_update": r.now()}
+	r.table('system_metrics').insert(data).run()
+
 @timing
 def find_benchmark_mongodb():
 	for i in range(0, total_operations):
@@ -128,8 +136,8 @@ def update_benchmark_rethinkdb():
 # for i in range(0, 3):
 # 	find_benchmark_mongodb()
 # 	find_benchmark_rethinkdb()
-
-
+#
+#
 print '------------------'
 print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Update', end=END_COLORED_LINE)
 print '------------------'
