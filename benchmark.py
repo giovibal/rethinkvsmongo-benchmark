@@ -14,7 +14,7 @@ unix_timestamp = 1432294074
 total_operations = 100000
 
 def random_timestamp():
-	return random.randrange(unix_timestamp, unix_timestamp+100000, 1)
+	return random.randint(unix_timestamp, unix_timestamp+100000)
 
 def random_int():
 	return random.randint(100, 300)
