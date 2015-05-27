@@ -87,12 +87,12 @@ for i in range(0, 100):
 @timing
 def find_benchmark_mongodb():
 	for i in range(0, total_operations):
-		mongo_collection.find({"last_update": {"$in": [random_timestamp()]}})
+		mongo_collection.find_one({"last_update": {"$in": [random_timestamp()]}})
 
 @timing
 def find_benchmark_rethinkdb():
 	for i in range(0, total_operations):
-		r.table(table_name).filter({"last_update":random_timestamp()})
+		r.table(table_name).filter({"last_update":random_timestamp()}).run()
 @timing
 def insert_benchmark_mongodb():
 	for i in range(0, total_operations):
@@ -103,7 +103,7 @@ def insert_benchmark_mongodb():
 def insert_benchmark_rethinkdb():
 	for i in range(0, total_operations):
 		metrics_document['last_update'] = unix_timestamp+i
-		r.table(table_name).insert(metrics_document, durability='hard').run()
+		r.table(table_name).insert(metrics_document, durability='soft').run()
 @timing
 def update_benchmark_mongodb():
 	data = {'size': random_int(), 'reads': random_int(), 'cache_hit_rate': random_int()}
@@ -114,7 +114,7 @@ def update_benchmark_mongodb():
 def update_benchmark_rethinkdb():
 	data = {'size': random_int(), 'reads': random_int(), 'cache_hit_rate': random_int()}
 
-	for i in range(0, 10):
+	for i in range(0, total_operations):
 		r.table(table_name).filter({"last_update":random_timestamp()}).update(data,
 		durability='soft').run()
 
@@ -122,25 +122,25 @@ def update_benchmark_rethinkdb():
 # print '------------------'
 # print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Insert', end=END_COLORED_LINE)
 # print '------------------'
-#
-# rethink_create_db_structure()
-#
+
+rethink_create_db_structure()
+
 # for i in range(0, 3):
-# 	insert_benchmark_mongodb()
-# 	insert_benchmark_rethinkdb()
-#
-#
-# print '------------------'
-# print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Find', end=END_COLORED_LINE)
-# print '------------------'
-# for i in range(0, 3):
-# 	find_benchmark_mongodb()
-# 	find_benchmark_rethinkdb()
-#
-#
+	# insert_benchmark_mongodb()
+	# insert_benchmark_rethinkdb()
+
+
 print '------------------'
-print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Update', end=END_COLORED_LINE)
+print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Find', end=END_COLORED_LINE)
 print '------------------'
 for i in range(0, 3):
-	update_benchmark_mongodb()
-	update_benchmark_rethinkdb()
+	find_benchmark_mongodb()
+	find_benchmark_rethinkdb()
+
+
+# print '------------------'
+# print "  {color}{op}{end}".format(color=COLOR_GREEN, op='Update', end=END_COLORED_LINE)
+# print '------------------'
+# for i in range(0, 3):
+	# update_benchmark_mongodb()
+	# update_benchmark_rethinkdb()
